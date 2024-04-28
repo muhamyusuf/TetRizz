@@ -2,7 +2,7 @@ import pygame as pg
 
 vec = pg.math.Vector2
 
-FPS = 60
+FPS = 144
 FIELD_COLOR = (0, 0, 0)
 BG_COLOR = (0, 0, 0)
 
