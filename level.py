@@ -1,3 +1,5 @@
+from tetris import Tetris
+
 class LevelManager:
     def __init__(self, score):
         self.score = score
@@ -13,4 +15,4 @@ class LevelManager:
             return 4
         
     def reset(self):
-        return 1;
+        self.score = 1

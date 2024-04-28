@@ -1,8 +1,9 @@
+import sys
+import pathlib
+
 from settings import *
 from tetris import Tetris, Text
 from level import LevelManager
-import sys
-import pathlib
 
 class App:
     def __init__(self):
@@ -15,6 +16,9 @@ class App:
         self.tetris = Tetris(self)
         self.text = Text(self)
         self.level_manager = LevelManager(0)
+
+    # def main_menu(self):
+    #     pass
 
     def load_images(self):
         files = [item for item in pathlib.Path(SPRITE_DIR_PATH).rglob('*.png') if item.is_file()]

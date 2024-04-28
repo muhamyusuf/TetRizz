@@ -9,7 +9,7 @@ BG_COLOR = (0, 0, 0)
 SPRITE_DIR_PATH = 'assets/rizz'
 FONT_PATH = 'assets/font/helvetica-compressed.otf'
 
-ANIM_TIME_INTERVAL = 500  # milliseconds 
+ANIM_TIME_INTERVAL = 500  # milliseconds
 # lvl 1 500
 # lvl 2 400
 # lvl 3 300
