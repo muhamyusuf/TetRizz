@@ -6,10 +6,22 @@ FPS = 144
 FIELD_COLOR = (0, 0, 0)
 BG_COLOR = (0, 0, 0)
 
-SPRITE_DIR_PATH = 'assets/rizz'
+SPRITE_DIR_PATH = 'assets/block'
 FONT_PATH = 'assets/font/helvetica-compressed.otf'
 
-ANIM_TIME_INTERVAL = 500  # milliseconds
+# Tambahkan variabel untuk status tema (light/dark)
+THEME_LIGHT = 'light'
+THEME_DARK = 'dark'
+DEFAULT_THEME = THEME_LIGHT  # Tema default
+CURRENT_THEME = DEFAULT_THEME  # Tema saat ini
+
+# Tambahkan variabel untuk status musik (on/off)
+MUSIC_ON = True
+MUSIC_OFF = False
+DEFAULT_MUSIC = MUSIC_ON  # Musik default
+CURRENT_MUSIC = DEFAULT_MUSIC  # Status musik saat ini
+
+ANIM_TIME_INTERVAL = 1000  # milliseconds
 # lvl 1 500
 # lvl 2 400
 # lvl 3 300

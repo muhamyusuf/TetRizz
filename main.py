@@ -1,24 +1,97 @@
 import sys
 import pathlib
+import pygame as pg
 
 from settings import *
-from tetris import Tetris, Text
+from tetris import Tetris
+from text import Text
 from level import LevelManager
+from settings_screen import SettingsScreen
+from theming import SetTheme
+
+pg.init()
+pg.mixer.init()
+
+pg.mixer.music.load('assets/song/tetris-remix.ogg')
+pg.mixer.music.set_volume(0.5)
+pg.mixer.music.play(loops=-1)
+
+# Memberhentikan lagu (opsional)
+# pg.mixer.music.stop()
+
 
 class App:
     def __init__(self):
         pg.init()
-        pg.display.set_caption('Tetris')
+        pg.display.set_caption('Tetrizz')
         self.screen = pg.display.set_mode(WIN_RES)
         self.clock = pg.time.Clock()
+        self.current_screen = "menu"
         self.set_timer()
         self.images = self.load_images()
         self.tetris = Tetris(self)
         self.text = Text(self)
         self.level_manager = LevelManager(0)
 
-    # def main_menu(self):
-    #     pass
+    def draw_button(self, text, position, button_size=(200, 60)):
+        font = pg.font.Font(FONT_PATH, 36)
+        text_surf = font.render(text, True, (255, 255, 255))
+        text_rect = text_surf.get_rect(center=position)
+
+        button_width, button_height = button_size
+        button_rect = pg.Rect(0, 0, button_width, button_height)
+        button_rect.center = position
+
+        button_surface = pg.Surface((button_width, button_height), pg.SRCALPHA)
+        button_surface.fill((0, 0, 0, 0))  # Make the surface transparent
+
+        # Draw filled rounded rectangle
+        border_radius = 15
+        pg.draw.rect(button_surface, (0, 0, 0, 0), button_surface.get_rect(), border_radius=border_radius)
+
+        # Draw the outline
+        pg.draw.rect(button_surface, (255, 255, 255), button_surface.get_rect(), width=2, border_radius=border_radius)
+
+        # Adjust the position of the text to be centered within the button
+        text_rect.center = button_rect.center
+
+        # Blit the button surface onto the main screen
+        self.screen.blit(button_surface, button_rect.topleft)
+        self.screen.blit(text_surf, text_rect)
+
+        return button_rect
+    
+    def handle_menu_events(self):
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                sys.exit()
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    pg.quit()
+                    sys.exit()
+            if event.type == pg.MOUSEBUTTONDOWN:
+                mouse_pos = event.pos
+                if self.solo_button.collidepoint(mouse_pos):
+                    self.run()
+                elif self.dual_button.collidepoint(mouse_pos):
+                    print("Dual Player mode selected")
+                elif self.settings_button.collidepoint(mouse_pos):
+                    print("Settings selected")
+
+    def main_menu(self):
+        while True:
+            self.handle_menu_events()
+            
+            self.screen.fill(color=BG_COLOR)
+            self.text.draw_main_menu()
+            
+            self.solo_button = self.draw_button("Solo Player", (WIN_RES[0] // 2, WIN_RES[1] // 2 - 75))
+            self.dual_button = self.draw_button("Dual Player", (WIN_RES[0] // 2, WIN_RES[1] // 2))
+            self.settings_button = self.draw_button("Settings", (WIN_RES[0] // 2, WIN_RES[1] // 2 + 75))
+
+            pg.display.update()
+            self.clock.tick(FPS)
 
     def load_images(self):
         files = [item for item in pathlib.Path(SPRITE_DIR_PATH).rglob('*.png') if item.is_file()]
@@ -65,7 +138,8 @@ class App:
             self.update()
             self.draw()
 
-
 if __name__ == '__main__':
     app = App()
-    app.run()
+    
+    app.main_menu()
+    
