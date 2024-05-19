@@ -9,6 +9,8 @@ BG_COLOR = (0, 0, 0)
 SPRITE_DIR_PATH = 'assets/block'
 FONT_PATH = 'assets/font/helvetica-compressed.otf'
 
+GAME_SCREEN = WIDTH, HEIGHT = 800, 500
+
 # Tambahkan variabel untuk status tema (light/dark)
 THEME_LIGHT = 'light'
 THEME_DARK = 'dark'
@@ -21,7 +23,10 @@ MUSIC_OFF = False
 DEFAULT_MUSIC = MUSIC_ON  # Musik default
 CURRENT_MUSIC = DEFAULT_MUSIC  # Status musik saat ini
 
-ANIM_TIME_INTERVAL = 1000  # milliseconds
+ANIM_TIME_INTERVAL = 300  # milliseconds
+
+background_light=pg.image.load('assets/images/light_background.png')
+background_dark=pg.image.load('assets/images/dark_background.png')
 # lvl 1 500
 # lvl 2 400
 # lvl 3 300

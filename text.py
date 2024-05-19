@@ -23,7 +23,7 @@ class Text:
         self.render_text((WIN_W * 0.64, WIN_H * 0.57), f'Level: {level}', 'orange', TILE_SIZE * 1.4, 'black')
 
     def draw_main_menu(self):
-        self.render_text((WIN_W * 0.375, WIN_H * 0.05), 'TetRizz', 'white', TILE_SIZE * 1.65, 'black')
+        self.render_text((WIDTH * 0.430, HEIGHT * 0.05), 'TetRizz', 'white', TILE_SIZE * 1.65)
 
     def render_text(self, position, text, color, size, bgcolor=None):
         self.font.render_to(self.app.screen, position, text=text, fgcolor=color, size=size, bgcolor=bgcolor)

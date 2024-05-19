@@ -1,2 +1,9 @@
+from settings import *
+from main import App
+
 class SetTheme:
-    pass
+    def light_mode(self):
+        pass
+
+    def dark_mode(self):
+        pass

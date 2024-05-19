@@ -78,7 +78,7 @@ class Tetris:
     def draw_grid(self):
         for x in range(FIELD_W):
             for y in range(FIELD_H):
-                pg.draw.rect(self.app.screen, 'gray',
+                pg.draw.rect(self.app.screen, '#E6E6E4',
                              (x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE), 1)
 
     def update(self):

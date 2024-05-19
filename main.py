@@ -6,8 +6,8 @@ from settings import *
 from tetris import Tetris
 from text import Text
 from level import LevelManager
-from settings_screen import SettingsScreen
-from theming import SetTheme
+# from settings_screen import SettingsScreen
+# from theming import SetTheme
 
 pg.init()
 pg.mixer.init()
@@ -24,9 +24,10 @@ class App:
     def __init__(self):
         pg.init()
         pg.display.set_caption('Tetrizz')
-        self.screen = pg.display.set_mode(WIN_RES)
+        self.screen = pg.display.set_mode(GAME_SCREEN)
         self.clock = pg.time.Clock()
         self.current_screen = "menu"
+        self.theme = "light"
         self.set_timer()
         self.images = self.load_images()
         self.tetris = Tetris(self)
@@ -82,13 +83,18 @@ class App:
     def main_menu(self):
         while True:
             self.handle_menu_events()
-            
-            self.screen.fill(color=BG_COLOR)
+
+            # self.screen.blit(background_dark, (0, 0))
+            if self.theme == "light":
+                self.screen.blit(background_light, (0, 0))
+            if self.theme == "dark":
+                self.screen.blit(background_dark, (0, 0))
+
             self.text.draw_main_menu()
             
-            self.solo_button = self.draw_button("Solo Player", (WIN_RES[0] // 2, WIN_RES[1] // 2 - 75))
-            self.dual_button = self.draw_button("Dual Player", (WIN_RES[0] // 2, WIN_RES[1] // 2))
-            self.settings_button = self.draw_button("Settings", (WIN_RES[0] // 2, WIN_RES[1] // 2 + 75))
+            self.solo_button = self.draw_button("Solo Player", (GAME_SCREEN[0] // 2, GAME_SCREEN[1] // 2 - 75))
+            self.dual_button = self.draw_button("Dual Player", (GAME_SCREEN[0] // 2, GAME_SCREEN[1] // 2))
+            self.settings_button = self.draw_button("Settings", (GAME_SCREEN[0] // 2, GAME_SCREEN[1] // 2 + 75))
 
             pg.display.update()
             self.clock.tick(FPS)
