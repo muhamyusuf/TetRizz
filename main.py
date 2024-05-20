@@ -9,24 +9,27 @@ from level import LevelManager
 # from settings_screen import SettingsScreen
 # from theming import SetTheme
 
+# Konfigurasi Pygame
 pg.init()
 pg.mixer.init()
 
+# Inisialisasi musik
 pg.mixer.music.load('assets/song/tetris-remix.ogg')
 pg.mixer.music.set_volume(0.5)
 pg.mixer.music.play(loops=-1)
 
-# Memberhentikan lagu (opsional)
-# pg.mixer.music.stop()
-
+# Constants untuk screens
+SCREEN_MENU = "menu"
+SCREEN_SETTINGS = "settings"
+SCREEN_SOLO = "solo"
+SCREEN_DUAL = "dual"
 
 class App:
     def __init__(self):
-        pg.init()
         pg.display.set_caption('Tetrizz')
         self.screen = pg.display.set_mode(GAME_SCREEN)
         self.clock = pg.time.Clock()
-        self.current_screen = "menu"
+        self.current_screen = SCREEN_MENU
         self.theme = "light"
         self.set_timer()
         self.images = self.load_images()
@@ -74,17 +77,17 @@ class App:
             if event.type == pg.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
                 if self.solo_button.collidepoint(mouse_pos):
-                    self.run()
+                    self.current_screen = SCREEN_SOLO
                 elif self.dual_button.collidepoint(mouse_pos):
-                    print("Dual Player mode selected")
+                    self.current_screen = SCREEN_DUAL
                 elif self.settings_button.collidepoint(mouse_pos):
-                    print("Settings selected")
+                    self.current_screen = SCREEN_SETTINGS
 
     def main_menu(self):
-        while True:
+        while self.current_screen == SCREEN_MENU:
             self.handle_menu_events()
 
-            # self.screen.blit(background_dark, (0, 0))
+            # Latar belakang sesuai dengan tema
             if self.theme == "light":
                 self.screen.blit(background_light, (0, 0))
             if self.theme == "dark":
@@ -98,6 +101,59 @@ class App:
 
             pg.display.update()
             self.clock.tick(FPS)
+
+        if self.current_screen == SCREEN_SOLO:
+            self.run_solo()
+        elif self.current_screen == SCREEN_DUAL:
+            self.run_dual()
+        elif self.current_screen == SCREEN_SETTINGS:
+            self.settings_menu()
+
+    def settings_menu(self):
+        while self.current_screen == SCREEN_SETTINGS:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    sys.exit()
+                if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
+                    self.current_screen = SCREEN_MENU
+
+            # Draw settings screen
+            self.screen.fill((255, 255, 255))  # Ganti dengan tampilan settings yang sesuai
+            font = pg.font.Font(FONT_PATH, 36)
+            settings_text = font.render("Settings", True, (0, 0, 0))
+            self.screen.blit(settings_text, (GAME_SCREEN[0] // 2 - settings_text.get_width() // 2, 50))
+
+            pg.display.update()
+            self.clock.tick(FPS)
+
+        self.main_menu()
+
+    def run_solo(self):
+        while self.current_screen == SCREEN_SOLO:
+            self.check_events()
+            self.update()
+            self.draw()
+
+            for event in pg.event.get():
+                if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
+                    self.current_screen = SCREEN_MENU
+                    break
+
+        self.main_menu()
+
+    def run_dual(self):
+        while self.current_screen == SCREEN_DUAL:
+            self.check_events()
+            self.update()
+            self.draw()
+
+            for event in pg.event.get():
+                if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
+                    self.current_screen = SCREEN_MENU
+                    break
+
+        self.main_menu()
 
     def load_images(self):
         files = [item for item in pathlib.Path(SPRITE_DIR_PATH).rglob('*.png') if item.is_file()]
@@ -146,6 +202,4 @@ class App:
 
 if __name__ == '__main__':
     app = App()
-    
     app.main_menu()
-    
