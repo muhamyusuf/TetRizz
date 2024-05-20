@@ -3,7 +3,7 @@ from tetris import Tetris
 from settings import settings
 from utils import FONT, play_music, stop_music
 
-class GameMode:
+class GameMode():
     def __init__(self, screen):
         self.screen = screen
 
@@ -48,7 +48,6 @@ class Menu(GameMode):
             text_surface = self.font.render(line, True, settings.get_theme()['text_color'])
             text_rect = text_surface.get_rect(center=(screen_center_x, 200 + i * 40))
             self.screen.blit(text_surface, text_rect.topleft)
-
 
 class SettingsScreen(GameMode):
     def __init__(self, screen):
@@ -98,8 +97,6 @@ class SoloTetrisGame(GameMode):
         self.tetris = Tetris(screen, {'left': pygame.K_LEFT, 'right': pygame.K_RIGHT, 'down': pygame.K_DOWN, 'rotate': pygame.K_UP}, 350, 25, 650, 50)
 
     def handle_event(self, event):
-        if event.key == pygame.K_SPACE:
-            self.tetris.drop_piece()
         if event.key in self.tetris.player_controls.values():
             if event.key == self.tetris.player_controls['left']:
                 self.tetris.move_piece(-1, 0)
@@ -109,7 +106,12 @@ class SoloTetrisGame(GameMode):
                 self.tetris.move_piece(0, 1)
             elif event.key == self.tetris.player_controls['rotate']:
                 self.tetris.rotate_piece()
+        if event.key == pygame.K_SPACE:
+            self.tetris.drop_piece()
         return 'solo' if not self.tetris.game_over else 'gameover'
+    
+        # if self.tetris.game_over:
+        #     return 'gameover'
 
     def update(self, dt):
         self.tetris.update(dt)
@@ -124,8 +126,6 @@ class DualTetrisGame(GameMode):
         self.tetris2 = Tetris(screen, {'left': pygame.K_LEFT, 'right': pygame.K_RIGHT, 'down': pygame.K_DOWN, 'rotate': pygame.K_UP}, 500, 25, 800, 50)
 
     def handle_event(self, event):
-        if event.key == pygame.K_LSHIFT:
-            self.tetris1.drop_piece()
         if event.key in self.tetris1.player_controls.values():
             if event.key == self.tetris1.player_controls['left']:
                 self.tetris1.move_piece(-1, 0)
@@ -135,9 +135,9 @@ class DualTetrisGame(GameMode):
                 self.tetris1.move_piece(0, 1)
             elif event.key == self.tetris1.player_controls['rotate']:
                 self.tetris1.rotate_piece()
+        if event.key == pygame.K_LSHIFT:
+            self.tetris1.drop_piece()
 
-        if event.key == pygame.K_SPACE:
-            self.tetris2.drop_piece()
         if event.key in self.tetris2.player_controls.values():
             if event.key == self.tetris2.player_controls['left']:
                 self.tetris2.move_piece(-1, 0)
@@ -147,6 +147,8 @@ class DualTetrisGame(GameMode):
                 self.tetris2.move_piece(0, 1)
             elif event.key == self.tetris2.player_controls['rotate']:
                 self.tetris2.rotate_piece()
+        if event.key == pygame.K_SPACE:
+            self.tetris2.drop_piece()
         
         if self.tetris1.game_over:
             return 'player2_win'
@@ -187,7 +189,6 @@ class GameOverScreen(GameMode):
         return_text_surface = self.font_small.render("Press R to return to menu", True, settings.get_theme()['text_color'])
         return_text_rect = return_text_surface.get_rect(center=(screen_center_x, 320))
         self.screen.blit(return_text_surface, return_text_rect.topleft)
-
 
 class PlayerWinScreen(GameMode):
     def __init__(self, screen, message):

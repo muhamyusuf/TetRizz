@@ -4,6 +4,17 @@ from settings import settings
 from utils import load_music, play_music
 from game import SoloTetrisGame, DualTetrisGame, Menu, SettingsScreen, GameOverScreen, PlayerWinScreen
 
+def initialize_game_modes(screen):
+    return {
+        'menu': Menu(screen),
+        'settings': SettingsScreen(screen),
+        'solo': SoloTetrisGame(screen),
+        'dual': DualTetrisGame(screen),
+        'gameover': GameOverScreen(screen),
+        'player1_win': PlayerWinScreen(screen, "Player 1 Wins!"),
+        'player2_win': PlayerWinScreen(screen, "Player 2 Wins!")
+    }
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((1000, 700))
@@ -14,16 +25,7 @@ def main():
         load_music()
         play_music()
 
-    game_modes = {
-        'menu': Menu(screen),
-        'settings': SettingsScreen(screen),
-        'solo': SoloTetrisGame(screen),
-        'dual': DualTetrisGame(screen),
-        'gameover': GameOverScreen(screen),
-        'player1_win': PlayerWinScreen(screen, "Player 1 Wins!"),
-        'player2_win': PlayerWinScreen(screen, "Player 2 Wins!")
-    }
-
+    game_modes = initialize_game_modes(screen)
     mode = 'menu'
 
     while True:
@@ -32,7 +34,11 @@ def main():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                mode = game_modes[mode].handle_event(event)
+                new_mode = game_modes[mode].handle_event(event)
+                if new_mode != mode:
+                    if new_mode in ['menu', 'gameover', 'player1_win', 'player2_win']:
+                        game_modes = initialize_game_modes(screen)
+                    mode = new_mode
 
         dt = clock.tick(144) / 1000.0
 
