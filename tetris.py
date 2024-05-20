@@ -15,13 +15,14 @@ SHAPES = [
 ]
 
 class Tetris:
-    def __init__(self, screen, player_controls, start_x, start_y, next_block_x, next_block_y):
+    def __init__(self, screen, player_controls, start_x, start_y, next_block_x, next_block_y, player_text=None):
         self.screen = screen
         self.player_controls = player_controls
         self.start_x = start_x
         self.start_y = start_y
         self.next_block_x = next_block_x
         self.next_block_y = next_block_y
+        self.player_text = player_text
         self.grid_width = 10
         self.grid_height = 20
         self.grid = self.create_grid()
@@ -122,6 +123,8 @@ class Tetris:
                 pygame.draw.rect(self.screen, (128, 128, 128), rect, 1)
 
     def draw_next_piece(self):
+        font = pygame.font.SysFont(FONT, 24)
+        draw_text(self.screen, "Next Block", font, settings.get_theme()['text_color'], (self.next_block_x, self.next_block_y - 30))
         shape = self.next_piece['shape']
         for y, row in enumerate(shape):
             for x, cell in enumerate(row):
@@ -141,15 +144,12 @@ class Tetris:
                     # Draw the shadow
                     shadow_rect = pygame.Rect(self.start_x + (self.current_piece['x'] + x) * 30, self.start_y + (shadow_y + y) * 30, 30, 30)
                     pygame.draw.rect(self.screen, self.shadow_color, shadow_rect)
-
                     # Draw the current piece
                     self.screen.blit(self.block_image, (self.start_x + (self.current_piece['x'] + x) * 30, self.start_y + (self.current_piece['y'] + y) * 30))
-
-        
         self.draw_grid()
         self.draw_next_piece()
         font = pygame.font.SysFont(FONT, 24)
-        draw_text(self.screen, 'Next piece:', font, settings.get_theme()['text_color'], (self.start_x + 300, self.start_y-1))
-        
-        draw_text(self.screen, f'Score: {self.score}', font, settings.get_theme()['text_color'], (self.start_x + 300, self.start_y + 100))
-        draw_text(self.screen, f'Level: {self.level}', font, settings.get_theme()['text_color'], (self.start_x + 300, self.start_y + 125))
+        draw_text(self.screen, f'Score: {self.score}', font, settings.get_theme()['text_color'], (self.start_x + 10, self.start_y + 10))
+        draw_text(self.screen, f'Level: {self.level}', font, settings.get_theme()['text_color'], (self.start_x + 10, self.start_y + 40))
+        if self.player_text:
+            draw_text(self.screen, self.player_text, font, settings.get_theme()['text_color'], (self.start_x, self.start_y - 30))

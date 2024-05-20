@@ -1,4 +1,4 @@
-FONT = 'assets/font/helvetica-compressed.otf'
+FONT = 'assets/fonts/helvetica-reguler.otf'
 
 import pygame
 
