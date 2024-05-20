@@ -96,7 +96,7 @@ def main():
                             dual_tetris1.move_piece(0, 1)
                         elif event.key == dual_tetris1.player_controls['rotate']:
                             dual_tetris1.rotate_piece()
-                    if event.key == pygame.K_RETURN:
+                    if event.key == pygame.K_LSHIFT:
                         dual_tetris1.drop_piece()
 
                     if event.key in dual_tetris2.player_controls.values():
