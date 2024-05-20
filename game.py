@@ -2,17 +2,20 @@ import pygame
 from tetris import Tetris
 from settings import settings
 from utils import FONT, play_music, stop_music
+from abc import ABC, abstractmethod
 
-class GameMode():
+class GameMode(ABC):
     def __init__(self, screen):
         self.screen = screen
 
+    @abstractmethod
     def handle_event(self, event):
         pass
 
     def update(self, dt):
         pass
 
+    @abstractmethod
     def draw(self):
         pass
 
