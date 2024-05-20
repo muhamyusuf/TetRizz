@@ -1,95 +1,155 @@
-import pygame as pg
-from settings import *
-from tetromino import Tetromino
+import pygame
+import random
+from settings import settings
+from utils import draw_text, load_image, FONT
+
+# Define the shapes of the blocks
+SHAPES = [
+    [[1, 1, 1, 1]],          # I shape
+    [[1, 1], [1, 1]],        # O shape
+    [[0, 1, 0], [1, 1, 1]],  # T shape
+    [[1, 1, 0], [0, 1, 1]],  # S shape
+    [[0, 1, 1], [1, 1, 0]],  # Z shape
+    [[1, 1, 1], [1, 0, 0]],  # J shape
+    [[1, 1, 1], [0, 0, 1]]   # L shape
+]
 
 class Tetris:
-    def __init__(self, app):
-        self.app = app
-        self.sprite_group = pg.sprite.Group()
-        self.field_array = self.get_field_array()
-        self.tetromino = Tetromino(self)
-        self.next_tetromino = Tetromino(self, current=False)
-        self.speed_up = False
-
+    def __init__(self, screen, player_controls, start_x, start_y, next_block_x, next_block_y):
+        self.screen = screen
+        self.player_controls = player_controls
+        self.start_x = start_x
+        self.start_y = start_y
+        self.next_block_x = next_block_x
+        self.next_block_y = next_block_y
+        self.grid_width = 10
+        self.grid_height = 20
+        self.grid = self.create_grid()
+        self.current_piece = self.get_new_piece()
+        self.next_piece = self.get_new_piece()
         self.score = 0
-        self.full_lines = 0
-        self.points_per_lines = {0: 0, 1: 100, 2: 300, 3: 700, 4: 1500}
+        self.level = 1
+        self.fall_speed = 0.5
+        self.fall_time = 0
+        self.game_over = False
+        self.update_theme()
 
-    def get_score(self):
-        old_score = self.score
-        self.score += self.points_per_lines[self.full_lines]
-        if self.score // 1000 > old_score // 1000:
-            self.app.level_manager.score = self.score
-        self.full_lines = 0
+    def update_theme(self):
+        self.block_image = load_image(settings.get_block_image_path())
+        self.shadow_color = (128, 128, 128)  # Set the shadow color
 
-    def check_full_lines(self):
-        row = FIELD_H - 1
-        for y in range(FIELD_H - 1, -1, -1):
-            for x in range(FIELD_W):
-                self.field_array[row][x] = self.field_array[y][x]
+    def create_grid(self):
+        return [[0 for _ in range(self.grid_width)] for _ in range(self.grid_height)]
 
-                if self.field_array[y][x]:
-                    self.field_array[row][x].pos = vec(x, y)
+    def get_new_piece(self):
+        shape = random.choice(SHAPES)
+        color = random.choice(settings.get_theme()['block_colors'])
+        return {'shape': shape, 'color': color, 'x': self.grid_width // 2 - len(shape[0]) // 2, 'y': 0}
 
-            if sum(map(bool, self.field_array[y])) < FIELD_W:
-                row -= 1
-            else:
-                for x in range(FIELD_W):
-                    self.field_array[row][x].alive = False
-                    self.field_array[row][x] = 0
+    def rotate_piece(self):
+        shape = self.current_piece['shape']
+        self.current_piece['shape'] = [list(row) for row in zip(*shape[::-1])]
+        if self.check_collision():
+            self.current_piece['shape'] = shape  # revert rotation if collision
 
-                self.full_lines += 1
+    def move_piece(self, dx, dy):
+        self.current_piece['x'] += dx
+        self.current_piece['y'] += dy
+        if self.check_collision():
+            self.current_piece['x'] -= dx
+            self.current_piece['y'] -= dy
+            return False
+        return True
 
-    def put_tetromino_blocks_in_array(self):
-        for block in self.tetromino.blocks:
-            x, y = int(block.pos.x), int(block.pos.y)
-            self.field_array[y][x] = block
+    def check_collision(self):
+        shape = self.current_piece['shape']
+        for y, row in enumerate(shape):
+            for x, cell in enumerate(row):
+                if cell:
+                    px = self.current_piece['x'] + x
+                    py = self.current_piece['y'] + y
+                    if px < 0 or px >= self.grid_width or py >= self.grid_height or self.grid[py][px]:
+                        return True
+        return False
 
-    def get_field_array(self):
-        return [[0 for x in range(FIELD_W)] for y in range(FIELD_H)]
+    def lock_piece(self):
+        shape = self.current_piece['shape']
+        for y, row in enumerate(shape):
+            for x, cell in enumerate(row):
+                if cell:
+                    self.grid[self.current_piece['y'] + y][self.current_piece['x'] + x] = self.current_piece['color']
+        self.current_piece = self.next_piece
+        self.next_piece = self.get_new_piece()
+        self.clear_lines()
+        if self.check_collision():
+            self.game_over = True  # Game over
 
-    def is_game_over(self):
-        if self.tetromino.blocks[0].pos.y == INIT_POS_OFFSET[1]:
-            pg.time.wait(300)
-            self.app.level_manager.reset()
-            return True
+    def clear_lines(self):
+        lines_to_clear = [i for i, row in enumerate(self.grid) if all(row)]
+        for i in lines_to_clear:
+            del self.grid[i]
+            self.grid.insert(0, [0 for _ in range(self.grid_width)])
+        self.score += len(lines_to_clear) * 10
+        if len(lines_to_clear) > 0:
+            self.level += 1
+            self.fall_speed *= 0.9
 
-    def check_tetromino_landing(self):
-        if self.tetromino.landing:
-            if self.is_game_over():
-                self.__init__(self.app)
-            else:
-                self.speed_up = False
-                self.put_tetromino_blocks_in_array()
-                self.next_tetromino.current = True
-                self.tetromino = self.next_tetromino
-                self.next_tetromino = Tetromino(self, current=False)
+    def drop_piece(self):
+        while self.move_piece(0, 1):
+            pass
+        self.lock_piece()
 
-    def control(self, pressed_key):
-        if pressed_key == pg.K_LEFT:
-            self.tetromino.move(direction='left')
-        elif pressed_key == pg.K_RIGHT:
-            self.tetromino.move(direction='right')
-        elif pressed_key == pg.K_UP:
-            self.tetromino.rotate()
-        elif pressed_key == pg.K_DOWN:
-            self.speed_up = True
+    def calculate_shadow_position(self):
+        original_y = self.current_piece['y']
+        while not self.check_collision():
+            self.current_piece['y'] += 1
+        self.current_piece['y'] -= 1
+        shadow_y = self.current_piece['y']
+        self.current_piece['y'] = original_y
+        return shadow_y
+
+    def update(self, dt):
+        self.fall_time += dt
+        if self.fall_time > self.fall_speed:
+            self.fall_time = 0
+            if not self.move_piece(0, 1):
+                self.lock_piece()
 
     def draw_grid(self):
-        for x in range(FIELD_W):
-            for y in range(FIELD_H):
-                pg.draw.rect(self.app.screen, '#E6E6E4',
-                             (x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE), 1)
+        for y in range(self.grid_height):
+            for x in range(self.grid_width):
+                rect = pygame.Rect(self.start_x + x * 30, self.start_y + y * 30, 30, 30)
+                pygame.draw.rect(self.screen, (128, 128, 128), rect, 1)
 
-    def update(self):
-        trigger = [self.app.anim_trigger, self.app.fast_anim_trigger][self.speed_up]
-        if trigger:
-            self.check_full_lines()
-            self.tetromino.update()
-            self.check_tetromino_landing()
-            self.get_score()
-        self.sprite_group.update()
+    def draw_next_piece(self):
+        shape = self.next_piece['shape']
+        for y, row in enumerate(shape):
+            for x, cell in enumerate(row):
+                if cell:
+                    self.screen.blit(self.block_image, (self.next_block_x + x * 30, self.next_block_y + y * 30))
 
     def draw(self):
+        shadow_y = self.calculate_shadow_position()
+        for y, row in enumerate(self.grid):
+            for x, cell in enumerate(row):
+                if cell:
+                    self.screen.blit(self.block_image, (self.start_x + x * 30, self.start_y + y * 30))
+        shape = self.current_piece['shape']
+        for y, row in enumerate(shape):
+            for x, cell in enumerate(row):
+                if cell:
+                    # Draw the shadow
+                    shadow_rect = pygame.Rect(self.start_x + (self.current_piece['x'] + x) * 30, self.start_y + (shadow_y + y) * 30, 30, 30)
+                    pygame.draw.rect(self.screen, self.shadow_color, shadow_rect)
+
+                    # Draw the current piece
+                    self.screen.blit(self.block_image, (self.start_x + (self.current_piece['x'] + x) * 30, self.start_y + (self.current_piece['y'] + y) * 30))
+
+        
         self.draw_grid()
-        self.sprite_group.draw(self.app.screen)
+        self.draw_next_piece()
+        font = pygame.font.SysFont(FONT, 24)
+        draw_text(self.screen, 'Next piece:', font, settings.get_theme()['text_color'], (self.start_x + 300, self.start_y-1))
+        
+        draw_text(self.screen, f'Score: {self.score}', font, settings.get_theme()['text_color'], (self.start_x + 300, self.start_y + 100))
+        draw_text(self.screen, f'Level: {self.level}', font, settings.get_theme()['text_color'], (self.start_x + 300, self.start_y + 125))
