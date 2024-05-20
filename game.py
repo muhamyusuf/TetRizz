@@ -1,7 +1,7 @@
 import pygame
 from tetris import Tetris
 from settings import settings
-from utils import draw_text, FONT, play_music, stop_music
+from utils import FONT, play_music, stop_music
 
 class GameMode:
     def __init__(self, screen):
@@ -91,7 +91,6 @@ class SettingsScreen(GameMode):
             text_surface = self.font.render(line, True, settings.get_theme()['text_color'])
             text_rect = text_surface.get_rect(center=(screen_center_x, 200 + i * 40))
             self.screen.blit(text_surface, text_rect.topleft)
-
 
 class SoloTetrisGame(GameMode):
     def __init__(self, screen):
