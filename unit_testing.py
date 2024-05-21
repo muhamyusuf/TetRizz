@@ -143,6 +143,9 @@ class TestTetris(unittest.TestCase):
         pygame.init()
         self.screen = pygame.display.set_mode((1000, 700))
         self.tetris = Tetris(self.screen, {}, 0, 0, 0, 0)
+        self.tetris.current_piece = self.tetris.get_new_piece()
+        while self.tetris.current_piece['shape'] == [[1, 1], [1, 1]]:  # Ensure the piece is not O-shape
+            self.tetris.current_piece = self.tetris.get_new_piece()
 
     def test_create_grid(self):
         grid = self.tetris.create_grid()
@@ -164,6 +167,19 @@ class TestTetris(unittest.TestCase):
         self.assertEqual(piece['x'], original_x + 1)
         self.assertEqual(piece['y'], original_y + 1)
         print("TestTetris test_move_piece passed")
+
+    def test_rotate_piece(self):
+        original_shape = self.tetris.current_piece['shape']
+        self.tetris.rotate_piece()
+        rotated_shape = self.tetris.current_piece['shape']
+        self.assertNotEqual(original_shape, rotated_shape)
+        print("TestTetris test_rotate_piece passed")
+
+    def test_check_collision(self):
+        # Move piece to bottom of the grid
+        self.tetris.current_piece['y'] = self.tetris.grid_height - len(self.tetris.current_piece['shape'])
+        self.assertTrue(self.tetris.check_collision())
+        print("TestTetris test_check_collision passed")
 
     def tearDown(self):
         pygame.quit()
