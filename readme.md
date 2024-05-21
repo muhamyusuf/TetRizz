@@ -193,14 +193,12 @@ class Menu(GameMode):
 # Tetrizz Game Team
 | Nama                    | NIM        | Peran                |
 |-------------------------|------------|----------------------|
-| Muhammad Yusuf          | 122140193  | Leader Team          |
-| Asavira Azzahra         | 122140067  | Idea Producer        |
-| Harisya Miranti         | 122140049  | Dokumenter           |
-| Febriani Nawang Wulan   | 122140071  | Designer             |
-| Nayla Fayyiza Khairina  | 122140033  | Concept Researcher   |
-| Ashoka Tatang Solihin   | 122140051  | Programmer           |
-
- +Semua menjadi programmer
+| Muhammad Yusuf          | 122140193  | Leader Team + Programmer         |
+| Asavira Azzahra         | 122140067  | Idea Producer + Programmer        |
+| Harisya Miranti         | 122140049  | Dokumenter + Programmer           |
+| Febriani Nawang Wulan   | 122140071  | Designer + Programmer             |
+| Nayla Fayyiza Khairina  | 122140033  | Concept Researcher + Programmer   |
+| Ashoka Tatang Solihin   | 122140051  | Programmer + testor          |
 
 
 # Referensi
