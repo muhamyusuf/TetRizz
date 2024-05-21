@@ -43,8 +43,18 @@ def main():
         dt = clock.tick(144) / 1000.0
 
         screen.fill(settings.get_theme()['background_color'])
-        game_modes[mode].update(dt)
-        game_modes[mode].draw()
+
+        if mode in ['solo', 'dual']:
+            game_modes[mode].update(dt)
+            if game_modes[mode].tetris.game_over:  # Check for game over
+                mode = 'gameover'
+                game_modes['gameover'].draw()
+            else:
+                game_modes[mode].draw()
+        else:
+            game_modes[mode].update(dt)
+            game_modes[mode].draw()
+
         pygame.display.flip()
 
 if __name__ == "__main__":
