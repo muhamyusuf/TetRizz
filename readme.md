@@ -10,6 +10,12 @@ Tetris, PlayerWinScreen, GameOverScreen, SettingsSreen, Settings, SoloTetrisGame
 ## UML
 ![UML](assets/game_screen/uml.png)
 
+## Penerapan 4 Pilar PBO dalam Game
+
+### Polymorphism
+### Enkapsulasi
+### Abstraksi
+### Pewarisan
 
 Song Source: [Youtube](https://youtu.be/f-UG6gGAf6c?si=9dJj_4vWguClxv2E)
 
