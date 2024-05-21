@@ -173,8 +173,6 @@ class Menu(GameMode):
             self.screen.blit(text_surface, text_rect.topleft)
 ```
 
-Song Source: [Youtube](https://youtu.be/f-UG6gGAf6c?si=9dJj_4vWguClxv2E)
-
 # Tampilan Main Menu
 ![Light Mode Main Menu](assets/game_screen/lightmode_mainmenu.png)
 ![Dark Mode Main Menu](assets/game_screen/darkmode_mainmenu.png)
@@ -191,3 +189,18 @@ Song Source: [Youtube](https://youtu.be/f-UG6gGAf6c?si=9dJj_4vWguClxv2E)
 ![Light Mode Settings Screen](assets/game_screen/lightmode_settings.png)
 ![Dark Mode Settings Screen](assets/game_screen/darkmode_settings.png)
 
+
+# Tetrizz Game Team
+
+| Nama                    | NIM        | Peran                |
+|-------------------------|------------|----------------------|
+| Muhammad Yusuf          | 122140193  | Leader Team & Programmer |
+| Asavira Azzahra         | 122140067  | Idea Producer        |
+| Harisya Miranti         | 122140049  | Designer Team        |
+| Febriani Nawang Wulan   | 122140071  | Designer Team        |
+| Nayla Fayyiza Khairina  | 122140033  | Concept Researcher   |
+| Ashoka Tatang Solihin   | 122140051  | Programmer           |
+
+# Referensi
+Song Source: [Youtube](https://youtu.be/f-UG6gGAf6c?si=9dJj_4vWguClxv2E)
+Game Referensi: [Game Referensi](https://youtu.be/RxWS5h1UfI4?si=_7wnbP27BzCJnx3C)
