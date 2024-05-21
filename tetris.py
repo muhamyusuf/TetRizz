@@ -15,14 +15,13 @@ SHAPES = [
 ]
 
 class Tetris:
-    def __init__(self, screen, player_controls, start_x, start_y, next_block_x, next_block_y, player_text=None):
+    def __init__(self, screen, player_controls, start_x, start_y, next_block_x, next_block_y):
         self.screen = screen
         self.player_controls = player_controls
         self.start_x = start_x
         self.start_y = start_y
         self.next_block_x = next_block_x
         self.next_block_y = next_block_y
-        self.player_text = player_text
         self.grid_width = 10
         self.grid_height = 20
         self.grid = self.create_grid()
@@ -110,12 +109,11 @@ class Tetris:
         return shadow_y
 
     def update(self, dt):
-        if not self.game_over:
-            self.fall_time += dt
-            if self.fall_time > self.fall_speed:
-                self.fall_time = 0
-                if not self.move_piece(0, 1):
-                    self.lock_piece()
+        self.fall_time += dt
+        if self.fall_time > self.fall_speed:
+            self.fall_time = 0
+            if not self.move_piece(0, 1):
+                self.lock_piece()
 
     def draw_grid(self):
         for y in range(self.grid_height):
@@ -124,17 +122,8 @@ class Tetris:
                 pygame.draw.rect(self.screen, (128, 128, 128), rect, 1)
 
     def draw_next_piece(self):
-        font = pygame.font.SysFont(FONT, 24)
-        draw_text(self.screen, "Next Block", font, settings.get_theme()['text_color'], (self.next_block_x, self.next_block_y - 30))
         shape = self.next_piece['shape']
         for y, row in enumerate(shape):
-            for x, cell in enumerate(row):
-                if cell:
-                    self.screen.blit(self.block_image, (self.next_block_x + x * 30, self.next_block_y + y * 30))
-
-    def draw(self):
-        shadow_y = self.calculate_shadow_position()
-        for y, row in enumerate(self.grid):
             for x, cell in enumerate(row):
                 if cell:
                     self.screen.blit(self.block_image, (self.next_block_x + x * 30, self.next_block_y + y * 30))
