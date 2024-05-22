@@ -138,11 +138,6 @@ class TestSettings(unittest.TestCase):
         self.assertEqual(settings.theme, new_theme)
         print("TestSettings test_set_theme passed")
 
-import unittest
-import pygame
-from tetris import Tetris
-from settings import settings
-
 class TestTetris(unittest.TestCase):
     def setUp(self):
         pygame.init()
