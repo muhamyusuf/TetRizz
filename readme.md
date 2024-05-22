@@ -191,18 +191,19 @@ class Menu(GameMode):
 
 
 # Tetrizz Game Team
-
 | Nama                    | NIM        | Peran                |
 |-------------------------|------------|----------------------|
-| Muhammad Yusuf          | 122140193  | Leader Team & Programmer |
-| Asavira Azzahra         | 122140067  | Idea Producer        |
-| Harisya Miranti         | 122140049  | Designer Team        |
-| Febriani Nawang Wulan   | 122140071  | Designer Team        |
-| Nayla Fayyiza Khairina  | 122140033  | Concept Researcher   |
-| Ashoka Tatang Solihin   | 122140051  | Programmer           |
+| Muhammad Yusuf          | 122140193  | Leader Team + Programmer         |
+| Asavira Azzahra         | 122140067  | Idea Producer + Programmer        |
+| Harisya Miranti         | 122140049  | Dokumenter + Programmer           |
+| Febriani Nawang Wulan   | 122140071  | Designer + Programmer             |
+| Nayla Fayyiza Khairina  | 122140033  | Concept Researcher + Programmer   |
+| Ashoka Tatang Solihin   | 122140051  | Programmer + testor          |
+
 
 # Referensi
 Song Source: [Youtube](https://youtu.be/f-UG6gGAf6c?si=9dJj_4vWguClxv2E)
+
 Game Referensi: [Game Referensi](https://youtu.be/RxWS5h1UfI4?si=_7wnbP27BzCJnx3C)
 test commit 
 new update
@@ -213,3 +214,6 @@ made by me
 
 # made by tatang
 tatang keren bet anjg
+
+Game Referensi: [Game Referensi](https://youtu.be/RxWS5h1UfI4?si=_7wnbP27BzCJnx3C)
+
