@@ -215,5 +215,7 @@ made by me
 # made by tatang
 tatang keren bet anjg
 
+made by nay
+
 Game Referensi: [Game Referensi](https://youtu.be/RxWS5h1UfI4?si=_7wnbP27BzCJnx3C)
 
