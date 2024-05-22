@@ -15,13 +15,14 @@ SHAPES = [
 ]
 
 class Tetris:
-    def __init__(self, screen, player_controls, start_x, start_y, next_block_x, next_block_y):
+    def __init__(self, screen, player_controls, start_x, start_y, next_block_x, next_block_y, player_text=None):
         self.screen = screen
         self.player_controls = player_controls
         self.start_x = start_x
         self.start_y = start_y
         self.next_block_x = next_block_x
         self.next_block_y = next_block_y
+        self.player_text = player_text
         self.grid_width = 10
         self.grid_height = 20
         self.grid = self.create_grid()
@@ -78,9 +79,9 @@ class Tetris:
             for x, cell in enumerate(row):
                 if cell:
                     self.grid[self.current_piece['y'] + y][self.current_piece['x'] + x] = self.current_piece['color']
+        self.clear_lines()
         self.current_piece = self.next_piece
         self.next_piece = self.get_new_piece()
-        self.clear_lines()
         if self.check_collision():
             self.game_over = True  # Game over
 
@@ -141,10 +142,8 @@ class Tetris:
                     # Draw the shadow
                     shadow_rect = pygame.Rect(self.start_x + (self.current_piece['x'] + x) * 30, self.start_y + (shadow_y + y) * 30, 30, 30)
                     pygame.draw.rect(self.screen, self.shadow_color, shadow_rect)
-
                     # Draw the current piece
                     self.screen.blit(self.block_image, (self.start_x + (self.current_piece['x'] + x) * 30, self.start_y + (self.current_piece['y'] + y) * 30))
-
         
         self.draw_grid()
         self.draw_next_piece()

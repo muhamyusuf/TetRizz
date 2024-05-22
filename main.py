@@ -42,6 +42,14 @@ def main():
 
         dt = clock.tick(144) / 1000.0
 
+        if mode == 'solo' and game_modes[mode].tetris.game_over:
+            mode = 'gameover'
+        elif mode == 'dual':
+            if game_modes[mode].tetris1.game_over:
+                mode = 'player2_win'
+            elif game_modes[mode].tetris2.game_over:
+                mode = 'player1_win'
+
         screen.fill(settings.get_theme()['background_color'])
         game_modes[mode].update(dt)
         game_modes[mode].draw()
