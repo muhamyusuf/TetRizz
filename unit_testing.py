@@ -138,6 +138,11 @@ class TestSettings(unittest.TestCase):
         self.assertEqual(settings.theme, new_theme)
         print("TestSettings test_set_theme passed")
 
+import unittest
+import pygame
+from tetris import Tetris
+from settings import settings
+
 class TestTetris(unittest.TestCase):
     def setUp(self):
         pygame.init()
@@ -175,11 +180,12 @@ class TestTetris(unittest.TestCase):
         self.assertNotEqual(original_shape, rotated_shape)
         print("TestTetris test_rotate_piece passed")
 
-    # def test_check_collision(self):
-    #     # Move piece to bottom of the grid
-    #     self.tetris.current_piece['y'] = self.tetris.grid_height - len(self.tetris.current_piece['shape'])
-    #     self.assertTrue(self.tetris.check_collision())
-    #     print("TestTetris test_check_collision passed")
+    def test_check_collision(self):
+        # Ubah grid menjadi satu baris penuh di bagian bawah agar terdeteksi collision
+        self.tetris.grid = [[0]*10 for _ in range(self.tetris.grid_height - 1)] + [[1]*10]
+        self.tetris.current_piece['y'] = self.tetris.grid_height - len(self.tetris.current_piece['shape'])
+        self.assertTrue(self.tetris.check_collision())
+        print("TestTetris test_check_collision passed")
 
     def tearDown(self):
         pygame.quit()
