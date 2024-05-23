@@ -53,6 +53,26 @@ class Tetris:
         if self.check_collision():
             self.current_piece['shape'] = shape  # revert rotation if collision
 
+    def move_piece(self, dx, dy):
+        self.current_piece['x'] += dx
+        self.current_piece['y'] += dy
+        if self.check_collision():
+            self.current_piece['x'] -= dx
+            self.current_piece['y'] -= dy
+            return False
+        return True
+
+    def check_collision(self):
+        shape = self.current_piece['shape']
+        for y, row in enumerate(shape):
+            for x, cell in enumerate(row):
+                if cell:
+                    px = self.current_piece['x'] + x
+                    py = self.current_piece['y'] + y
+                    if px < 0 or px >= self.grid_width or py >= self.grid_height or self.grid[py][px]:
+                        return True
+        return False
+
     def lock_piece(self):
         shape = self.current_piece['shape']
         for y, row in enumerate(shape):
