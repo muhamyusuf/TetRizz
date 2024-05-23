@@ -28,7 +28,8 @@ themes = {
         ],
         'background_image': 'assets/background/light_background.png',
         'block_image': 'assets/block/dark_block.png'
-    },'colourful': {
+    },
+    'colourful': {
         'background_color': (112, 130, 56),
         'text_color': (255, 255, 255),
         'block_colors': [
