@@ -199,12 +199,12 @@ class Menu(GameMode):
 | Febriani Nawang Wulan   | 122140071  | Designer + Programmer            |
 | Nayla Fayyiza Khairina  | 122140033  | Concept Researcher + Programmer  |
 | Ashoka Tatang Solihin   | 122140051  | Programmer + testor              |
-|-------------------------------------------------------------------------|
 
 
 # Referensi
 Song Source: [Youtube](https://youtu.be/f-UG6gGAf6c?si=9dJj_4vWguClxv2E)
 Game Referensi: [Game Referensi](https://youtu.be/RxWS5h1UfI4?si=_7wnbP27BzCJnx3C)
+
 
 # Presentasi
 [Link Presentasi](https://youtu.be/RxWS5h1UfI4?si=_7wnbP27BzCJnx3C)
