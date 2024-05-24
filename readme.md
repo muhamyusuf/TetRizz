@@ -207,4 +207,4 @@ Game Referensi: [Game Referensi](https://youtu.be/RxWS5h1UfI4?si=_7wnbP27BzCJnx3
 
 
 # Presentasi
-[Link Presentasi](https://youtu.be/RxWS5h1UfI4?si=_7wnbP27BzCJnx3C)
+[Link Presentasi](https://drive.google.com/file/d/1ziLT3qxPSKPXRSzQh8dT-kNCQN03Itas/view?usp=drive_link)
